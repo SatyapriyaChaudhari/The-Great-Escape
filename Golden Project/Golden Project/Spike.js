@@ -5,13 +5,16 @@ class Spike{
         this.width = width;
         this.height = height;
 
-        this.body= Bodies.rectangle(x,y,width,height,{isStatic:false});
+        //this.body= Bodies.rectangle(x,y,width,height,{isStatic:false});
+        this.body = createSprite(x, y, 10, 10);
         this.image = loadImage("Pictures/Spike.png");
+        this.body.addImage(this.image);
+        this.body.scale = 0.2;
         World.add(world,this.body);
     }
 
-    display(){
+    /*display(){
         imageMode(CENTER);
         image(this.image, this.x, this.y, this.width, this.height);
-    }
+    }*/
 }

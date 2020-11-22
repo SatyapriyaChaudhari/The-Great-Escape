@@ -1,6 +1,7 @@
 const Engine= Matter.Engine;
 const Bodies= Matter.Bodies;
 const World= Matter.World;
+const Detector = Matter.Detector;
 
 var backgroundImg = [];
 var stone1,stone2,stone3,stone4,stone5,stone6,stone7,stone8,stone9,stone10,stone11,stone12,stone13,stone14,
@@ -12,6 +13,7 @@ var gameState ="Intro";
 
 var player;
 
+var healthSprite;
 function preload() {
   backgroundImg[0] = loadImage("Pictures/background1.jpg");
   backgroundImg[1] = loadImage("Pictures/background2.jpg");
@@ -26,7 +28,7 @@ function setup() {
   engine=Engine.create();
   world=engine.world;
 
-  player= new Player(displayWidth/6,500);
+  player= new Player(displayWidth/6,displayHeight-130);
   console.log(player);
  
   if(level===1){
@@ -53,6 +55,9 @@ function setup() {
     stone20= new Stone(displayWidth-750,displayHeight-580,200,20);
     stone21= new Stone(displayWidth-650,displayHeight-450,200,20);
     stone22= new Stone(displayWidth-500,displayHeight-620,200,20);
+
+    healthSprite= new Health(10);
+    console.log(healthSprite);
   }
 }
 
@@ -61,7 +66,22 @@ function draw() {
   //background(backgroundImg[0]);
   Engine.update(engine);
 
-  player.display();
+  //player.display();
+
+  if (healthSprite.hp.length < 7 && healthSprite.hp.length > 3){
+    for (var i = 0; i < healthSprite.hp.length; i++){
+      healthSprite.hp[i].shapeColor = "yellow";
+    }
+  }
+  if (healthSprite.hp.length < 4){
+    for (var i = 0; i < healthSprite.hp.length; i++){
+      healthSprite.hp[i].shapeColor = "red";
+    }
+  }
+
+  if(player.body.isTouching(spike13.body)){
+    healthSprite.hp.pop();
+  }
 
   if(level===1){
     stone1.display();
@@ -77,7 +97,7 @@ function draw() {
     stone11.display();
     stone12.display();
     stone13.display();
-    spike13.display();
+    //spike13.display();
     stone14.display();
     stone15.display();
     stone16.display();
@@ -87,14 +107,27 @@ function draw() {
     stone20.display();
     stone21.display();
     stone22.display();
+
   }
+  drawSprites();
 }
 
 function keyPressed(){
 
-  if(keyCode === 32){
-    player.position.y=player.position.y+10;
-    console.log("do you work?");
+  if(keyCode === 38){
+    player.body.position.y=player.body.position.y-20;
+  }
+
+   if(keyCode === 37){
+    player.body.position.x=player.body.position.x-20;
+  }
+
+  if(keyCode === 39){
+    player.body.position.x=player.body.position.x+20;
+  }
+
+  if(keyCode === 40){
+    player.body.position.y=player.body.position.y+20;
   }
 
 }
